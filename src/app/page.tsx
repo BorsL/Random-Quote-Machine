@@ -1,101 +1,52 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+import React, { useState } from 'react'
+import Link from 'next/link';
+import quotes from '@/pages/quotes.json';
+import { AiFillEdit } from "react-icons/ai";
+import Modify from '@/pages/Modify';
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+export default function App() {
+    const[index, setIndex] = useState(0);
+    const quote = quotes[index].quote;
+    const author = quotes[index].author;
+    const next = () => setIndex((index+1)%quotes.length);
+
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
+        
+        {/* QUOTES BOX */}
+        <div className="relative max-w-lg p-8 bg-white rounded-lg shadow-md dark:bg-gray-900">
+          <h1 className="text-2xl font-bold text-center text-gray-900 dark:text-gray-300">Quote of the day</h1>
+          <div className="absolute top-0 left-0 w-4 h-4 rounded-tl-lg border-t-4 border-l-4 border-slate-500"></div>
+          <div className="absolute bottom-0 right-0 w-4 h-4 rounded-br-lg border-b-4 border-r-4 border-slate-500"></div>
+          
+          <div className="my-6">
+            <p className="text-3xl font-bold text-gray-700 dark:text-white">" {quote}</p>
+            <p className="mt-4 text-left text-lg font-semibold text-gray-800 dark:text-gray-200">- {author} -</p>
+          </div>
+
+          {/* BUTTONS */}
+          
+          <div
+              className="absolute bottom-[-3rem] right-4 flex space-x-3"
+            >
+              {/* First Button */}
+                <button
+                  onClick={() => (window.location.href = "./Modify")}
+                  className="flex items-center justify-center px-4 py-2 text-white bg-gray-600 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-red-300">
+                  <AiFillEdit className="w-4 h-5" />
+                </button>
+              
+              {/* Second Button */}
+              <button
+                onClick={next}
+                className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+              >
+                Inspire me again
+              </button>
+            </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+      </div>
+    );
 }
